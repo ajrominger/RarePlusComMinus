@@ -535,7 +535,7 @@ figLetter('topleft', 'B')
 We also need to know the shapes of the species abundance distributions (SAD) of each assemblage to simulate realistic data. I do this using the function `fitSAD` from the custom *pika* package. I preform model selection on three standard SAD forms: the log-series, Poisson log-normal, and zero-truncated negative binomial, and record the best fit model and its parameter(s) for each assemblage.
 
 ```{r sad_comp, dependson = c('obs_data', 'threading', 'obs_plusMinus_comp')}
-mods <- c('fish', 'plnorm', 'tnegb')
+mods <- c('lseries', 'plnorm', 'tnegb')
 sadStats <- mclapply(obsdat, mc.cores = nthrd, FUN = function(x) {
     nsite <- nrow(x)
     x <- colSums(x)
@@ -550,6 +550,12 @@ sadStats <- mclapply(obsdat, mc.cores = nthrd, FUN = function(x) {
     
     return(o)
 })
+
+# mclapply returns 'try-error' objects (length 1) when a worker fails; surface the
+# underlying message instead of failing obscurely downstream
+sadErr <- sapply(sadStats, function(x) inherits(x, 'try-error'))
+if(any(sadErr)) stop('fitSAD failed for ', sum(sadErr), ' assemblage(s); first error: ',
+                     sadStats[[which(sadErr)[1]]])
 
 sadStats <- as.data.frame(do.call(rbind, sadStats))
 names(sadStats) <- c('mod', 'par1', 'par2', 'J', 'nspp', 'nsite')
@@ -688,13 +694,13 @@ nsimSimp <- nsim
 In this case I use a log-series SAD with $\beta =$ `r b`, a negative binomial with $k = $`r oneK`, and consider an assemblage with on average `r nsiteSimp` sites and `r nsppSimp` species.
 
 ```{r, sim_simple_nb_plusMinus_comp, dependson = c('sim_simple_setup', 'threading')}
-simPMSimpNB <- simpleSim(nsiteSimp, nsppSimp, nthrd, sadfun = function(n) rfish(n, b),
+simPMSimpNB <- simpleSim(nsiteSimp, nsppSimp, nthrd, sadfun = function(n) rlseries(n, b),
                          ssadfun = function(n, mu) rnbinom(n, oneK, mu = mu),
                          nsim = nsimSimp)
 ```
 
 ```{r, sim_simple_pois_plusMinus_comp, dependson = c('sim_simple_setup', 'threading')}
-simPMSimpPo <- simpleSim(nsiteSimp, nsppSimp, nthrd, sadfun = function(n) rfish(n, b),
+simPMSimpPo <- simpleSim(nsiteSimp, nsppSimp, nthrd, sadfun = function(n) rlseries(n, b),
                          ssadfun = function(n, mu) rpois(n, lambda = mu),
                          nsim = nsimSimp)
 ```
@@ -731,10 +737,10 @@ nsim <- 100
 To understand why these spurious results occur we must understand what the fixed-fixed null model [@ulrich2010; @patefield1981] does to the underlying SSAD.  We know that the fixed-fixed algorithm preserves, by definition, the SAD and the total abundances across sites, but within any given species, the allocation of its abundances has a potentially large combinatorial space.  To understand what happens to SSADs when permuted, I simulate `r nsim` assemblages, each with `nspp` species and `nsite` sites and compare the shape of the permuted SSAD with the true SSAD. I characterize SSAD shape by the number of sites occupied by a species and the maximum likelihood estimate of the negative binomial clustering parameter $k$.  The results of this simulation are discussed in the main text.
 
 ```{r ssad_perm_comp, dependson = c('ssad_perm_setup', 'threading', 'sim_simple_setup')}
-simNBPerm <- ssadSim(nsite, nspp, nthrd, function(n) {rfish(n, b)},
+simNBPerm <- ssadSim(nsite, nspp, nthrd, function(n) {rlseries(n, b)},
                      function(n, mu) {rnbinom(n, oneK, mu = mu)}, nsim = nsim)
 
-simPoPerm <- ssadSim(nsite, nspp, nthrd, function(n) {rfish(n, b)},
+simPoPerm <- ssadSim(nsite, nspp, nthrd, function(n) {rlseries(n, b)},
                      function(n, mu) {rpois(n, lambda = mu)}, nsim = nsim)
 ```
 
