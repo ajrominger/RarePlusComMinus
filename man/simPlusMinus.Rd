@@ -60,6 +60,4 @@ in a Poisson SSAD (i.e., there are only two options, negative binomial specified
 }
 \author{
 Andy Rominger <ajrominger@gmail.com>
-
-Andy Rominger <ajrominger@gmail.com>
 }
