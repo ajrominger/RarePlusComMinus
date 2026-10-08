@@ -73,7 +73,7 @@ plusMinus <- function(x, alpha = 0.05, B = 999) {
 # and mean abundances, unweighted and weighted by centrality
 .abundCenCorMean <- function(elist, abund) {
     if(nrow(elist) < 3) {
-        return(list(v = NA, rho = NA, p = NA, m = NA, wm = NA))
+        return(list(v = NA, rho = c(rho = NA_real_), p = NA, m = NA, wm = NA))
     } else {
         cen <- table(c(elist[, 1], elist[, 2]))
         x <- abund[as.integer(names(cen))]
@@ -88,7 +88,7 @@ plusMinus <- function(x, alpha = 0.05, B = 999) {
         # return: corr coeff, corr p-val, mean abund, mean abund weighted by centrality
         return(list(v = length(cen),
                     # rho = o$estimate, p = o$p.value,
-                    rho = o, p = NA,
+                    rho = c(rho = o), p = NA,
                     m = mean(relx), wm = weighted.mean(relx, cen)))
     }
 }
