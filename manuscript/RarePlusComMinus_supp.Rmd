@@ -291,7 +291,7 @@ fig2est <- r * (sum((y0 - yblu)) + sum((y0 - yred)))
 
 It should be noted that my inset plot of mean weighted abundances (Supplementary Fig. \ref{fig:plusMinus_obs} B) differs from CEA Figure 2C in that their y-axis ranges from 0 to 220, while mine ranges from 0 to 120. I suspected the original authors mislabeled their axis, because the scale as presented would suggest over `r 100 * floor(fig2est / 100)` assemblages, while the number should be 326.  Re-scaling their axis to range from 0 to 120 brings the rough estimate from their figure more in line with the reported number of assemblages.
 
-# Exploring patterns of species abundance across space
+# Exploring patterns of species abundance across space {#sec-ssad-supp}
 
 Now we explore the shape of the spatial species abundance distributions (SSADs) in the real data provided by CEA [@calatayud2019].  The main function we use is `nbFit` from the *RarePlusComMinus* package which calculates summary statistics about the negative binomial and Poisson fits to SSAD data.
 

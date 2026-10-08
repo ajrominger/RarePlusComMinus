@@ -1,10 +1,12 @@
 ---
 title: "Spatial aggregation confounds null model-based inference of species association networks"
+author: Andrew J. Rominger
 header-includes:
    - \usepackage{xr}
    - \externaldocument{RarePlusComMinus_supp}
    - \usepackage{lineno}
    - \newcommand{\ssec}[1]{Supplementary Section~\ref{#1}}
+   - \newcommand{\sfig}[1]{Supplementary Figure~\ref{#1}}
 output:
   pdf_document:
     fig_caption: yes
@@ -103,7 +105,7 @@ The `nb_fit()` function from *RarePlusComMinus* fits both negative binomial and 
 - a $\chi^2$-distributed goodness-of-fit statistic for the negative binomial [`zsq`; @etienne2007]
 - the species' total abundance and occupancy.
 
-The negative binomial likelihood function does not have a finite maximum when the mean of a species' abundances across sites is greater than or equal to their variance. A non-finite likelihood is not necessarily evidence against the negative binomial as the true generating distribution, as @fig-good-mle shows, samples drawn from a negative binomial distribution have a non-0 probability of producing an estimated mean greater than or equal to the estimated variance. This occurs disproportionately for rare species and for studies with few sites (@fig-inf-k), which is not entirely unexpected that rare species and/or matrices with less sampling will have poorly behaved likelihood functions. 
+The negative binomial likelihood function does not have a finite maximum when the mean of a species' abundances across sites is greater than or equal to their variance. A non-finite likelihood is not necessarily evidence against the negative binomial as the true generating distribution, as Supp. Fig. \ref{fig:goodMLE} shows, samples drawn from a negative binomial distribution have a non-0 probability of producing an estimated mean greater than or equal to the estimated variance. This occurs disproportionately for rare species and for studies with few sites (Supp. Fig. \ref{fig:finiteK}), which is not entirely unexpected that rare species and/or matrices with less sampling will have poorly behaved likelihood functions. 
 
 I therefore assess the prevalence of the negative binomial SSAD, and thus ISSA, in two complementary ways: 1) where the likelihood is defined, I compare AIC support for the negative binomial versus the Poisson; and 2) for all species, regardless of whether the likelihood is defined, I evaluate goodness of fit of the negative binomial using the square-transformed $z$ statistic of @etienne2007, which is $\chi^2$-distributed with one degree of freedom under the null hypothesis that the data are negative binomial [@romMeteR].
 
@@ -122,6 +124,7 @@ To evaluate whether estimated network patterns observed in the real data can be 
 1) The number of species $S$, number of sites $M$, and shape of the best fitting SAD are sampled (with replacement) from the observed data
 2) $S$ species abundances $x_i \ldots x_S$ are sampled from the SAD
 3) For each species $i$ with abundance $x_i$, within-species counts are distributed across the $M$ sites according to an SSAD that is either negative binomial (in the case of spatial aggregation) or Poisson (in the case of spatial randomness)
+4) The mean of the SSAD is taken to be $x_i / M$ and, in the case of the negative binomial, the $k$ parameter is sampled from a linear model of $k$ predicted by relative abundance (Supp. Fig. \ref{fig:ssad})
 4) `net_stats()` is used on the simulated matrix to calculate the same network summary statistics as were calculated for the real data.
 
 $N = `r length(abundMats)`$ random matrices, the same number as real matrices, are simulated for both the negative binomial and Poisson SSADs.
@@ -138,7 +141,12 @@ To understand what properties of the negative binomial distribution lead to thes
 
 ### Prevalence of negative binomial spatial aggregation
 
-@fig-aic-ssad-mk (\ssec{sec-repro}) shows that the negative binomial model is strongly preferred over the Poisson for the large majority of species in the Calatayud et al. compilation; even where AIC favors the Poisson, it is never strongly favored (\ssec{sec-repro}). Essentially every case in which the Poisson is favored corresponds to a species for which the negative binomial likelihood is undefined (mean $\geq$ variance), consistent with a sampling artifact of rare species rather than genuine evidence for spatial randomness (\sfig{fig-inf-k-mk}, @fig-good-mle).
+Figure \ref{fig:good_mle_aic} shows that the negative binomial model is strongly preferred over the Poisson for the large majority of species in the Calatayud et al. compilation; even where AIC favors the Poisson, it is never strongly favored (\ssec{sec-ssad-supp}). Essentially every case in which the Poisson is favored corresponds to a species for which the negative binomial likelihood is undefined (mean $\geq$ variance) and sample size is very small (Supp. Fig. \ref{fig:goodMLE}), consistent with a sampling artifact of rare species rather than genuine evidence for spatial randomness. Indeed, a $z^2$ goodness of fit test never rejects the negative binomial distribution, even for cases where mean $\geq$ variance (Supp. Fig. \ref{fig:ssad}).
+
+```{r fig.cap = 'Change in spatial species abundance (SSAD) model support of negative binomial versus Poisson versus total species abundance. Bars of different colors represent the proportion of species assigned to each level of model support as indicated by the legend. \\label{fig:good_mle_aic}'}
+knitr::include_graphics("RarePlusComMinus_supp_files/figure-latex/dAIC_by_abund-1.pdf")
+
+```
 
 ### Observed and simulated networks
 
