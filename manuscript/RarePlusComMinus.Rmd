@@ -128,15 +128,17 @@ $N = `r length(abundMats)`$ random matrices, the same number as real matrices, a
 
 ### Behavior of negative binomial and Poisson SSADs under permutation
 
-foo
+The illuminate how negative binomial SSADs behave differently from Poisson SSADs under permutation I simulate many random site-by-species matrices of each type---negative binomial or Poisson. For all SSADs I calculate two summary statistics: the number of occupied sites, and the maximum likelihood estimate of $k$ (which serves as a measure of spatial aggregation). I then subject each site by species matrix to permuation and re-calculate the summary statistics. Finally, I compare real and permuted summary statistics to see how permutation has systematically altered their values. 
 
 ### Mathematical Exploration of Negative Binomial SSADs
 
-foo
+To understand what properties of the negative binomial distribution lead to these results I calculate probabilities of different SSAD configurations that would maximize or minimize Schoener similarity.
 
 ## Results and Discussion
 
-### SSADs and SADs fit to the data
+### Prevalence of negative binomial spatial aggregation
+
+@fig-aic-ssad-mk (\ssec{sec-repro}) shows that the negative binomial model is strongly preferred over the Poisson for the large majority of species in the Calatayud et al. compilation; even where AIC favors the Poisson, it is never strongly favored (\ssec{sec-repro}). Essentially every case in which the Poisson is favored corresponds to a species for which the negative binomial likelihood is undefined (mean $\geq$ variance), consistent with a sampling artifact of rare species rather than genuine evidence for spatial randomness (\sfig{fig-inf-k-mk}, @fig-good-mle).
 
 ### Observed and simulated networks
 
