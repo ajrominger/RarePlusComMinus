@@ -86,7 +86,7 @@ data(abundMats)
 
 ```
 
-A custom R package, *RarePlusComMinus* accompanies this paper and can be used to reproduce all results. \ssec{sec-setup} details how to access and install *RarePlusComMinus*. All analysis scripts and data analyzed are available via the package.
+A custom R package, *RarePlusComMinus* accompanies this paper and can be used to reproduce all results. \ssec{sec-repro} details how to access and install *RarePlusComMinus*. All analysis scripts and data analyzed are available via the package.
 
 I use a data set of site-by-species abundance matrices compiled by @calatayud2019. The data are included with the *RarePlusComMinus* package as `abundMats` and comprise `r length(abundMats)` site-by-species matrices. These compiled data are ideal for investigating the impact of ISSA on association network inference because they were used by @calatayud2019 for the very purpose of network inference and also because they represent a spatially and taxonomically extensive collection of quality-controlled data.
 

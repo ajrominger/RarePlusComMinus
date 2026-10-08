@@ -20,7 +20,7 @@ options(tinytex.clean = FALSE)
 
 This supplement combines a narrative account of how to reproduce the results in the main text as well as additional analyses in support of the conclusions in the main text.
 
-# Reproducibility
+# Reproducibility {#sec-repro}
 
 The results of this study can be fully reproduced by installing the package *RarePlusComMinus* (available on GitHub) written in R [@rcore].  Installation requires the package *devtools* [@devtools], and two other custom packages, *socorro* [@socorro] for plotting, and *pika* [@pika]:
 
@@ -530,7 +530,7 @@ figLetter('topleft', 'B')
 ```
 
 
-# Exploring the species abundance distribution
+# Exploring the species abundance distribution {#sec-sad}
 
 We also need to know the shapes of the species abundance distributions (SAD) of each assemblage to simulate realistic data. I do this using the function `fitSAD` from the custom *pika* package. I preform model selection on three standard SAD forms: the log-series, Poisson log-normal, and zero-truncated negative binomial, and record the best fit model and its parameter(s) for each assemblage.
 
